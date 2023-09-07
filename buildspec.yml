@@ -1,11 +1,14 @@
 version: 0.2
 
+env:
+  variables:
+    REPOSITORY_URI: "906870476590.dkr.ecr.us-east-1.amazonaws.com/sample-aws-registry"
+
 phases:
   pre_build:
     commands:
-      - echo "$(aws ecr get-login-password --region us-east-1) | docker login --username AWS --password-stdin 906870476590.dkr.ecr.us-east-1.amazonaws.com/sample-aws-registry"
-      - REPOSITORY_URI=906870476590.dkr.ecr.us-east-1.amazonaws.com/sample-aws-registry
-      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - echo $(aws ecr get-login-password --region us-east-1) | docker login --username AWS --password-stdin $REPOSITORY_URI
+      - export COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
   build:
     commands:
       - docker build -t $REPOSITORY_URI:latest .
