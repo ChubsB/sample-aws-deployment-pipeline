@@ -1,6 +1,5 @@
-# Define a base image
-FROM node:18
-
+# Use the image from Amazon ECR Public Gallery
+FROM public.ecr.aws/docker/library/node:16.20.2-bullseye-slim
 # Create a directory in the container where the app will be placed
 WORKDIR /usr/src/app
 
